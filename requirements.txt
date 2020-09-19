@@ -1,3 +1,5 @@
+lxml
+matplotlib
 requests
 dateutil
 bs4

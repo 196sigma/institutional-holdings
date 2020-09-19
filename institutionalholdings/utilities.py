@@ -1,3 +1,5 @@
+import sys
+sys.path.append('/home/reggie/institutional-holdings/')
 import pandas as pd
 import sys
 import re
@@ -8,10 +10,10 @@ import lxml.etree as et
 import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 import requests
+from institutionalholdings.config import API_KEY_FP, __XSL_FILE_FP__, __FILER_INFO_FP__
 
-__FILER_INFO_FP__ = "filer-info-db.csv"
-__XSL_FILE__ = "holdingsparser/xslfiles/13F-HR.xsl"
-OPENFIGI_API_KEY = "db1b37e5-875e-4999-a014-243ebab89a16"
+OPENFIGI_API_KEY = open(API_KEY_FP, 'r').read()
+
 
 def ticker_from_cusip(cusip, load_from_cache=False, save_to_cache=True):
     if load_from_cache:
@@ -90,7 +92,7 @@ def get_holdings_by_cik_by_quarter(cik, quarter=""):
     date_filed = list(res['date_filed'])[0]
     holdings_document_url = list(res['holdings_xml_url'])[0]
     
-    data = parse_holdings_document(holdings_document_url, __XSL_FILE__)
+    data = parse_holdings_document(holdings_document_url, __XSL_FILE_FP__)
     data = str(data)
     data = data.split("\n")
     data = [s.split("\t") for s in data]
